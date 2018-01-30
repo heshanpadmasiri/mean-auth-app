@@ -9,10 +9,22 @@ const mongoose = require('mongoose');
 // initializing app
 const app = express();
 
+const users = require('./routes/users');
+
 // port for back end 
 const port = 3000;
 
-// route to home page
+// Cors middleware
+app.use(cors());
+
+// Body parser middleware
+app.use(bodyParser.json());
+
+// Static folder
+app.use(express.static(path.join(__dirname,'public')));
+
+app.use('/users',users);
+// Index route
 app.get('/',(req,res) => {
     res.send("invalid endpoint")
 });
