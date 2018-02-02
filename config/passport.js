@@ -8,9 +8,7 @@ module.exports = function(passport){
     opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
     opts.secretOrKey = config.secret;
     passport.use(new JwtStrategy(opts, (jwtPayload, done) => {
-        // Todo: jwtPayload is not getting transfered here check
-        console.log(jwtPayload);
-        User.getUserById(jwtPayload._doc._id, (err, user) => {
+        User.getUserById(jwtPayload._id, (err, user) => {
             if(err){
                 return done(err, false);
             }

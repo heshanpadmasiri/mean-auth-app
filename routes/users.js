@@ -33,7 +33,7 @@ router.post('/register',(req,res,next) => {
 router.post('/authenticate',(req,res,next) => {
     const username = req.body.username;
     const password = req.body.password;
-
+    
     User.getUserByUsername(username, (err, user) => {
         if(err) throw err;
         if(!user){
@@ -41,17 +41,19 @@ router.post('/authenticate',(req,res,next) => {
                 success:false,
                 msg: "user not found"
             });
-        }
+        }     
+        
         User.comparePasswords(password, user.password, (err, isMatch) => {
             if(err) throw err;
-            if(isMatch){     
+            if(isMatch){ 
+                
                 console.log(user);           
                 const token = jwt.sign(user, config.secret, {
                     expiresIn: 604800 // 1 week in seconds                    
                 });
                 res.json({
                     success:true,
-                    token: 'JWT ' + token,
+                    token: token,
                     user: {
                         id: user._id,
                         name:user.name,
