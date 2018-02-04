@@ -39,6 +39,8 @@ router.post('/authenticate',(req,res,next) => {
         if(!user){
             return res.json({
                 success:false,
+                token:null,
+                user:null,
                 msg: "user not found"
             });
         }     
@@ -59,11 +61,14 @@ router.post('/authenticate',(req,res,next) => {
                         name:user.name,
                         username:user.username,
                         email:user.email
-                    }
+                    },
+                    msg: "User authenticated successfully"
                 });
             } else {
                 res.json({
                     success:false,
+                    token:null,
+                    user:null,
                     msg: "Wrong password"
                 });
             }
