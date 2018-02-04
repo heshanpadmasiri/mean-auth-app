@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
 import decode from 'jwt-decode';
+import { tokenNotExpired } from 'angular2-jwt'
 
 @Injectable()
 export class AuthService {
@@ -19,7 +20,7 @@ export class AuthService {
     const token = this.getToken();
     // return a boolean reflecting 
     // whether or not the token is expired
-    return token != undefined;
+    return tokenNotExpired(null,token);
   }
 
   registerUser(user):Observable<RegisterResponse>{
