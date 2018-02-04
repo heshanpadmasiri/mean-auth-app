@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class AuthService {
-  user:User;
+  user:any;
   authToken:any;
 
   constructor(private http:HttpClient) { }
@@ -19,14 +19,22 @@ export class AuthService {
     let headers = new HttpHeaders().set('Content-Type','application/json');
     return this.http.post('http://localhost:3000/users/authenticate',user,{headers:headers}) as Observable<AuthenticateResponse>;      
   }
+
+  storeUserData(token,user){
+    localStorage.setItem('id_token',token);
+    localStorage.setItem('user', JSON.stringify(user));
+    this.authToken = token;
+    this.user = user;
+  }
+
+  logout(){
+    this.authToken = null;
+    this.user = null;
+    localStorage.clear();
+  }
 }
 
-interface User{
-  name:String,
-  username:String,
-  password:String,
-  email:String
-}
+
 
 interface RegisterResponse{
   success:boolean,
@@ -35,7 +43,7 @@ interface RegisterResponse{
 
 interface AuthenticateResponse{
   success:boolean,
-  token:any,
+  token:String,
   user:any,
   msg:string
 }
